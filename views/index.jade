@@ -2,4 +2,8 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Welcome to #{title}  
+  a#connect.bit.button(href="#") Connect with SoundCloud
+  div.logged-in(style="display:none;")    
+    p Logged in as: 
+    span#username

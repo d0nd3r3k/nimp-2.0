@@ -1,0 +1,13 @@
+!!! 5
+html(lang='en')
+    head
+        meta(charset='utf-8', http-equiv="Content-Type", content="text/html")
+        meta(name='description', content='')
+        link(rel='stylesheet', href='/css/homepage.css')
+        title Connect with SoundCloud
+        script(type='text/javascript', src='/js/jquery-1.9.1.min.js');
+        script(type='text/javascript', src='//connect.soundcloud.com/sdk.js');
+        script(type='text/javascript', src='/js/main.js');
+
+    body(onload="window.opener.setTimeout(window.opener.SC.connectCallback, 1)")
+
