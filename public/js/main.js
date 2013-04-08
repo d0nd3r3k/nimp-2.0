@@ -8,6 +8,14 @@ $(document).ready(function(){
     /*SC.stream("/tracks/293", function(sound){
        // sound.play();
     });*/
+    $(".filter").on('click',function(e){
+        e.preventDefault();
+        $(this).attr('id');
+        $(".filter").removeClass('active');
+        $(this).addClass('active');
+        $(".s-block").hide();
+        $("."+$(this).attr('id')).fadeIn(300);
+    });
     
     $("#connect").on('click',function(e){
         e.preventDefault();
@@ -20,44 +28,51 @@ $(document).ready(function(){
                 $('.logged-in').delay(200).fadeIn(300);
                 
                 SC.get("/me/followings", function(followings){
-                    //console.log(followings[0].id);
-                    var tracks_number = 0;     
-                    for(var i = 0; i < followings.length; i++){
+                    var tracks_number = 0;    
+                    
+                    for(var i = 0; i < followings.length; i++){    
+                        if(followings[i].avatar_url && followings[i].track_count > 0){
+                            var reputation = followings[i].public_favorites_count + followings[i].followers_count*0.3  ;
+                            var block = "<div data-id='"+followings[i].id+"' class='s-block artists'>\n\
+                                                <img src='"+followings[i].avatar_url+"'/>\n\
+                                                <div class='text'>\n\
+                                                    <h2 class='title'>"+followings[i].username+"</h2>\n\
+                                                    <p class='reputation'>Reputation Score: "+parseInt(reputation)+"</p>\n\
+                                                    <p class='reputation'>"+followings[i].track_count+" Track</p>\n\
+                                                </div>\n\
+                                            </div>";
+                            $('.listen').append(block);
+                        }
                         SC.get("/users/" + followings[i].id + "/tracks", function(tracks){
                             tracks_number += tracks.length;
                             $('.track').text(tracks_number + " tracks");
                             // console.log(tracks);
                             for(var j = 0; j < tracks.length; j++){
                                 var buzz = 0;
-                                //tracks[j].title
-                                //tracks[j].artwork_url
-                                if(tracks[j].artwork_url){
-                                    var block = "<div class='s-block'>\n\
-                                                <img src='"+tracks[j].artwork_url+"'/>\n\
-                                                <div class='text'>\n\
-                                                    <h2 class='title'>"+tracks[j].title+"</h2>\n\
-                                                </div>\n\
-                                            </div>";
-                                    $('.listen').append(block);
-                                }
+                                
                                 if(tracks[j].commentable){
                                     buzz += tracks[j].comment_count*2;
                                 }
                                 if(tracks[j].downloadable){
                                     buzz += tracks[j].download_count*1.5;
                                 }
+                                    buzz += tracks[i].playback_count*0.5;
                                 
-                                buzz += tracks[i].favoritings_count;
-                                buzz += tracks[i].playback_count*0.5;
-                                console.log(parseInt(buzz));
-                                
-                                
+                                if(tracks[j].artwork_url){
+                                    var block = "<div class='s-block tracks' style='display:none;'>\n\
+                                                <img src='"+tracks[j].artwork_url+"'/>\n\
+                                                <div class='text'>\n\
+                                                    <h2 class='title'>"+tracks[j].title+"</h2>\n\
+                                                    <p>N!MP Score: "+ parseInt(buzz) +"</p>\n\
+                                                </div>\n\
+                                            </div>";
+                                    $('.listen').append(block);
+                                }     
                             }
                         });
-                        
-                        
                     }
-                })
+                      
+                });
             });
         });
     });
