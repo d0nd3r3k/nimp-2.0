@@ -1,6 +1,12 @@
 extends layout
 
 block content
+    div#player.playerModal.hide.fade
+        button.close ×
+        div.player
+            
+
+    
     div.myContainer
         div.row-fluid.header
                 div.navbar-inverse
@@ -22,16 +28,21 @@ block content
             div.sidebar
                 ul.sidebar-nav
                     li.active
-                        a Listen
+                        a 
+                            p.fui-volume-24 
+                            span Listen
                     li
-                        a Discover
+                        a 
+                            p.fui-eye-24
+                            span Discover
                     li 
-                        a Organize
+                        a 
+                            p.fui-bubble-24
+                            span Share    
        
                 div.remote
                     a Remote
-            div.wrapper
-                div.span12.discover
+                div.a-nav
                     ul.sub-list
                         li.filter#artists.active
                             a artists
@@ -40,6 +51,9 @@ block content
                         li.filter#favorites 
                             a favorites
                     
-                div.span10.listen
-                div.organize
-                    span.discover-title Organize
+            div.listen
+                div.l-holder
+            div.organize
+                span.organise-title Organize
+                
+

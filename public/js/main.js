@@ -16,7 +16,23 @@ $(document).ready(function(){
         $(".s-block").hide();
         $("."+$(this).attr('id')).fadeIn(300);
     });
-    
+    $('.listen').on('click', '.tracks', function(){
+        var track_id = $(this).data("id");
+        SC.stream("/tracks/" + track_id, function(sound){
+            sound.play();
+            $(".close").on('click', function(){
+                $('#player').modal('hide');
+                sound.stop();
+            })
+        });
+        $('#player').modal('show');   
+    });
+    $(".close").on('click', function(){
+        $('#player').modal('hide');
+    })
+    $('.listen').on('click', '.artists', function(){
+        
+        });    
     $("#connect").on('click',function(e){
         e.preventDefault();
         SC.connect(function(){
@@ -41,7 +57,7 @@ $(document).ready(function(){
                                                     <p class='reputation'>"+followings[i].track_count+" Track</p>\n\
                                                 </div>\n\
                                             </div>";
-                            $('.listen').append(block);
+                            $('.l-holder').append(block);
                         }
                         SC.get("/users/" + followings[i].id + "/tracks", function(tracks){
                             tracks_number += tracks.length;
@@ -56,26 +72,32 @@ $(document).ready(function(){
                                 if(tracks[j].downloadable){
                                     buzz += tracks[j].download_count*1.5;
                                 }
-                                    buzz += tracks[i].playback_count*0.5;
+                                buzz += tracks[i].playback_count*0.5;
                                 
                                 if(tracks[j].artwork_url){
-                                    var block = "<div class='s-block tracks' style='display:none;'>\n\
+                                    var block = "<div data-id='"+tracks[j].id+"' class='s-block tracks' style='display:none;'>\n\
                                                 <img src='"+tracks[j].artwork_url+"'/>\n\
                                                 <div class='text'>\n\
                                                     <h2 class='title'>"+tracks[j].title+"</h2>\n\
                                                     <p>N!MP Score: "+ parseInt(buzz) +"</p>\n\
                                                 </div>\n\
                                             </div>";
-                                    $('.listen').append(block);
+                                    $('.l-holder').append(block);
                                 }     
                             }
+                            
                         });
                     }
                       
+                    
                 });
+                
             });
+          
         });
+        
     });
+    
 
 });
 
