@@ -1,9 +1,32 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}  
-  a#connect.bit.button(href="#") Connect with SoundCloud
-  div.logged-in(style="display:none;")    
-    p Logged in as: 
-    span#username
+    div.myContainer
+        div.row-fluid.header
+                div.navbar-inverse
+                    div.navbar-inner
+                        div.myLeft    
+                            a.brad(href="#") N!MP
+                         div.myRight   
+                            a#connect.bit.button(href="#")
+                                img(src="http://connect.soundcloud.com/2/btn-connect-sc-l.png")
+                            div.logged-in(style="display:none;")    
+                                div#avatar.user-img
+                                    img
+                                div.user-info
+                                    p 
+                                        span#username    
+                                    p.track 80 track    
+
+         div.row-fluid
+            div.sidebar
+                ul.sidebar-nav
+                    li.active
+                        a Listen
+                    li
+                        a Discover
+                    li 
+                        a Organize
+                div.remote
+                    a Remote
+            div.wrapper
