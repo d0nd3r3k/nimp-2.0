@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    var online = false;
+    var online = true;
     
     if(!online){
         SC.initialize({
