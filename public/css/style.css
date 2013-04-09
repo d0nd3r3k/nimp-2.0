@@ -208,8 +208,70 @@ ul.sidebar-nav li a{
     height: 353px;
     width: 570px;
     position: fixed;
-    top: 10%;
+    top: 20%;
     left: 50%;
     z-index: 1050;
     margin-left: -284px;
+}
+.info-block{
+    position: absolute;
+    bottom: 8px;
+    left: 50px;
+    width: 480px;
+}
+.info-block img{
+    border: 4px solid white;
+    float: left;
+    width: 50px;
+    height: 50px;
+}
+
+.info-block h2{
+    float: left;
+    margin-left: 12px;
+    margin-top: 0px;
+    width: 404px;
+    line-height: 1;
+    font-size: 20px;
+    font-weight: lighter;
+}
+.info-block p{
+    float: left;
+    margin: 0 0 0 13px;
+    padding: 0;
+    font-size: 13px;
+    color: #999;
+    font-weight: lighter;
+}
+.comments{
+    position: fixed;
+    z-index: 99999
+}
+.comments .comment{
+    color: #34495e;
+    padding: 14px;
+    font-size: 22px;
+    font-weight: lighter;
+}
+.l-comments{
+    top:0;
+    left:0;
+    width: 20%;
+    height: 100%;
+    text-align: left;
+}
+.r-comments{
+    top:0;
+    right:0;
+    width: 20%;
+    height: 100%;
+    text-align: right;
+}
+.m-comments{
+    top:0;
+    width: 500px;
+    left:50%;
+    height: 10%;
+    margin-left: -250px;
+    text-align: center;
 }

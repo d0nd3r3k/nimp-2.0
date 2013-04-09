@@ -1,7 +1,7 @@
 $(document).ready(function(){
     
     SC.initialize({
-        client_id: "988ae8ccee6597e1d4e45ac225d80ea2",
+        client_id: "18057c47126031a99017661840257417",
         redirect_uri: "http://localhost:3000/callback"
     });
     
@@ -18,18 +18,56 @@ $(document).ready(function(){
     });
     $('.listen').on('click', '.tracks', function(){
         var track_id = $(this).data("id");
-        SC.stream("/tracks/" + track_id, function(sound){
+        //var duration = $(this).data("duration");
+        var score = $(this).data("score");
+        var artwork_url = $(this).find('img').attr('src');
+        var title = $(this).find('.title').text();
+        
+        $(".player").append("<div class='info-block'><div>");
+        $(".info-block").append("<img src='" + artwork_url + "' />");
+        $(".info-block").append("<h2>" + title + "</h2>");
+        $(".info-block").append("<p> N!MP Score: " + score + "</p>");
+        $(".l-comments").data('isLeft',true);
+        $(".r-comments").data('isRight',false);
+        
+        SC.stream("/tracks/" + track_id, {
+            
+            ontimedcomments: function(comments){
+                $(".m-comments").show();
+                $(".l-comments").show();
+                $(".r-comments").show();
+                //console.log(comments[0].body);
+                var comment = "<div class='comment'>" + comments[0].body + "</div>";
+                var isLeft = $(".l-comments").data('isLeft');
+                var isRight = $(".l-comments").data('isRight');
+                
+                if($(comment).text().length < 16 && isLeft){
+                    $(".l-comments").prepend("<div class='comment'>" + comments[0].body + "</div>");
+                    $(".l-comments").data('isLeft',false);
+                    $(".r-comments").data('isRight',true);
+                }
+                else if($(comment).text().length < 16 && isRight){
+                    $(".l-comments").prepend("<div class='comment'>" + comments[0].body + "</div>");
+                    $(".l-comments").data('isLeft',true);
+                    $(".r-comments").data('isRight',false);
+                }
+                else{    
+                    $(".m-comments").html("<div class='comment'>" + comments[0].body + "</div>");
+                }
+                
+            }
+        },function(sound){
             sound.play();
             $(".close").on('click', function(){
                 $('#player').modal('hide');
+                $(".info-block").remove();
                 sound.stop();
-            })
+            });
         });
         $('#player').modal('show');   
     });
-    $(".close").on('click', function(){
-        $('#player').modal('hide');
-    })
+    
+    
     $('.listen').on('click', '.artists', function(){
         
         });    
@@ -48,7 +86,7 @@ $(document).ready(function(){
                     
                     for(var i = 0; i < followings.length; i++){    
                         if(followings[i].avatar_url && followings[i].track_count > 0){
-                            var reputation = followings[i].public_favorites_count + followings[i].followers_count*0.3  ;
+                            var reputation = followings[i].public_favorites_count + followings[i].followers_count*0.3;
                             var block = "<div data-id='"+followings[i].id+"' class='s-block artists'>\n\
                                                 <img src='"+followings[i].avatar_url+"'/>\n\
                                                 <div class='text'>\n\
@@ -75,7 +113,8 @@ $(document).ready(function(){
                                 buzz += tracks[i].playback_count*0.5;
                                 
                                 if(tracks[j].artwork_url){
-                                    var block = "<div data-id='"+tracks[j].id+"' class='s-block tracks' style='display:none;'>\n\
+                                    //data-duration='"+tracks[j].duration+"'
+                                    var block = "<div data-id='"+tracks[j].id+"' data-score='"+parseInt(buzz)+"' class='s-block tracks' style='display:none;'>\n\
                                                 <img src='"+tracks[j].artwork_url+"'/>\n\
                                                 <div class='text'>\n\
                                                     <h2 class='title'>"+tracks[j].title+"</h2>\n\
