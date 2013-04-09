@@ -254,16 +254,16 @@ ul.sidebar-nav li a{
     font-weight: lighter;
 }
 .l-comments{
-    top:0;
+    top:15%;
     left:0;
-    width: 20%;
+    width: 25%;
     height: 100%;
     text-align: left;
 }
 .r-comments{
-    top:0;
+    top:15%;
     right:0;
-    width: 20%;
+    width: 25%;
     height: 100%;
     text-align: right;
 }

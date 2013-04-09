@@ -1,10 +1,18 @@
 $(document).ready(function(){
+    var online = false;
     
-    SC.initialize({
-        client_id: "18057c47126031a99017661840257417",
-        redirect_uri: "http://localhost:3000/callback"
-    });
-    
+    if(!online){
+        SC.initialize({
+            client_id: "18057c47126031a99017661840257417",
+            redirect_uri: "http://localhost:3000/callback"
+        });
+    }
+    else if(online){
+        SC.initialize({
+            client_id: "988ae8ccee6597e1d4e45ac225d80ea2",
+            redirect_uri: "http://preso.ly:3000/callback"
+        });
+    }
     /*SC.stream("/tracks/293", function(sound){
        // sound.play();
     });*/
@@ -27,8 +35,7 @@ $(document).ready(function(){
         $(".info-block").append("<img src='" + artwork_url + "' />");
         $(".info-block").append("<h2>" + title + "</h2>");
         $(".info-block").append("<p> N!MP Score: " + score + "</p>");
-        $(".l-comments").data('isLeft',true);
-        $(".r-comments").data('isRight',false);
+        $(".l-comments").addClass('isLeft');
         
         SC.stream("/tracks/" + track_id, {
             
@@ -36,23 +43,36 @@ $(document).ready(function(){
                 $(".m-comments").show();
                 $(".l-comments").show();
                 $(".r-comments").show();
-                //console.log(comments[0].body);
+                console.log(comments[0].body);
                 var comment = "<div class='comment'>" + comments[0].body + "</div>";
-                var isLeft = $(".l-comments").data('isLeft');
-                var isRight = $(".l-comments").data('isRight');
                 
-                if($(comment).text().length < 16 && isLeft){
-                    $(".l-comments").prepend("<div class='comment'>" + comments[0].body + "</div>");
-                    $(".l-comments").data('isLeft',false);
-                    $(".r-comments").data('isRight',true);
+                if($(".l-comments").hasClass('isLeft') && $(comment).text().length < 32 ){
+                    $(".l-comments").prepend($(comment).hide()
+                        .fadeIn("fast")
+                        .delay(5000)
+                        .fadeOut('fast'));
+                                    
+                                    
+                    $(".l-comments").removeClass('isLeft');
+                    $(".r-comments").addClass('isRight');
                 }
-                else if($(comment).text().length < 16 && isRight){
-                    $(".l-comments").prepend("<div class='comment'>" + comments[0].body + "</div>");
-                    $(".l-comments").data('isLeft',true);
-                    $(".r-comments").data('isRight',false);
+                else if($(".r-comments").hasClass('isRight') && $(comment).text().length < 32){
+                    $(".r-comments").prepend($(comment).hide()
+                        .fadeIn("fast")
+                        .delay(5000)
+                        .fadeOut('fast'));
+                                    
+                                    
+                    
+                    
+                    $(".l-comments").addClass('isLeft');
+                    $(".r-comments").removeClass('isRight');
                 }
                 else{    
-                    $(".m-comments").html("<div class='comment'>" + comments[0].body + "</div>");
+                    $(".m-comments").html($(comment).hide()
+                        .fadeIn("fast")
+                        .delay(10000)
+                        .fadeOut('fast'));
                 }
                 
             }
@@ -61,6 +81,7 @@ $(document).ready(function(){
             $(".close").on('click', function(){
                 $('#player').modal('hide');
                 $(".info-block").remove();
+                $(".comment").remove();
                 sound.stop();
             });
         });
@@ -110,7 +131,7 @@ $(document).ready(function(){
                                 if(tracks[j].downloadable){
                                     buzz += tracks[j].download_count*1.5;
                                 }
-                                buzz += tracks[i].playback_count*0.5;
+                                //buzz += tracks[i].playback_count*0.5;
                                 
                                 if(tracks[j].artwork_url){
                                     //data-duration='"+tracks[j].duration+"'
