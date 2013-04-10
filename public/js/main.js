@@ -20,14 +20,8 @@ $(document).ready(function(){
             
             });
     });
-    
-    $(".s-blocks").hover(function(){
-        $(this).css('background','#E74C3C');  
-    }, function(){
-        $(this).css('background','#34495e');  
-    });
-    
-    //Filter dropdown sort-nav
+  
+   //Filter dropdown sort-nav
     $(".filter").on('click',function(e){
         if($(this).attr("id") == "tracks"){
             $("ul.sort-tracks").fadeIn("slow");
