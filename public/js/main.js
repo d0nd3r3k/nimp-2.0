@@ -1,6 +1,6 @@
 $(document).ready(function(){
     
-    var online = true;
+    var online = false;
     
     if(!online){
         SC.initialize({
@@ -21,7 +21,7 @@ $(document).ready(function(){
             });
     });
   
-   //Filter dropdown sort-nav
+    //Filter dropdown sort-nav
     $(".filter").on('click',function(e){
         if($(this).attr("id") == "tracks"){
             $("ul.sort-tracks").fadeIn("slow");
@@ -45,10 +45,18 @@ $(document).ready(function(){
         var artwork_url = $(this).find('img').attr('src');
         var title = $(this).find('.title').text();
         
+        var downloadable = $(this).find('#download-url').data('d');
+        var download_url = $(this).find('#download-url').data('url');
+        
+        
         $(".player").append("<div class='info-block'><div>");
         $(".info-block").append("<img src='" + artwork_url + "' />");
         $(".info-block").append("<h2>" + title + "</h2>");
         $(".info-block").append("<p> N!MP Score: " + score + "</p>");
+        
+        $(".info-block").append("<a href='"+download_url+"'><i class=' icon-arrow-down icon-white'><i/></a>")
+        
+        
         $(".l-comments").addClass('isLeft');
         
         SC.stream("/tracks/" + track_id, 
@@ -102,6 +110,7 @@ $(document).ready(function(){
                 $("#player").modal('hide');
                 $(".info-block").remove();
                 $(".comment").remove();
+                $(".comments").hide();
                 sound.stop();
     
             });    
@@ -176,18 +185,22 @@ $(document).ready(function(){
                                 if(track.downloadable){
                                     buzz += track.download_count*1.5;
                                 }
-                                buzz += track.playback_count*0.5;
+                                buzz += track.playback_count*0.3;
+                                buzz += track.favoritings_count*0.7;
                                 
                                 //Generate Track Block
                                 if(track.artwork_url){
-                                    
+                                    //TODO: download_url - duration - genre - 
                                     var block = "<div data-id='"+track.id+"' data-score='"+parseInt(buzz)+"' class='s-block tracks' style='display:none;'>\n\
                                                 <img src='"+track.artwork_url+"'/>\n\
                                                 <div class='text'>\n\
                                                     <h2 class='title'>"+track.title+"</h2>\n\
                                                     <p>N!MP Score: "+ parseInt(buzz) +"</p>\n\
-                                                </div>\n\
-                                            </div>";
+                                                </div>";
+                                    
+                                    block += "<div data-d='"+track.downloadable+"' data-url='"+track.download_url+"' id='download-url'></div>";
+                                    
+                                    block += "</div>";
                                     $('.l-holder').append(block);
                                 }     
                             });
@@ -216,12 +229,12 @@ $(document).ready(function(){
     created_at: "2013/03/30 18:59:58 +0000"
     description: "VIP Promo Mix for Geminate Productions/Bushwacked 2013"
     download_count: 17
-    download_url: "https://api.soundcloud.com/tracks/85648420/download"
+    download_url: "https://api.soundcloud.com/tracks/85648420/download" //
     downloadable: true
-    duration: 1246288
+    duration: 1246288 //
     embeddable_by: "all"
-    favoritings_count: 20
-    genre: "Ghetto Swing Biznass"
+    favoritings_count: 20 //
+    genre: "Ghetto Swing Biznass" //
     id: 85648420
     isrc: ""
     key_signature: ""

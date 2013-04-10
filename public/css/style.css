@@ -16,11 +16,11 @@
     float:right;
 }
 .navbar-inner .myRight{
-    margin: 5px;
+    margin: 11px;
 }
 .navbar-inner .myLeft{
     text-shadow: 0px -1px 0px rgba(0,0,0,.5);
-    margin: 0px 7px;
+    margin: 9px 0px 4px 6px;
 }
 .navbar-inner .myLeft a{
     text-decoration: none;
@@ -53,21 +53,29 @@
     background: #34495e;
     position: fixed;
     left: 0;
-    top: 40px;
+    top: 51px;
     text-align: center;
-
 }
 .remote{
     position: absolute;
-    bottom: 40px;
+    bottom: 51px;
     width: 100%;
-    padding: 30px 0;
+    padding: 12px 0;
     background: #3498DB;
+    font-weight: lighter;
+    text-transform: uppercase;
+    cursor:pointer;
+}
+.remote:hover{
+    background: #E74C3C;
 }
 .remote a{
     color: #FEFEFE;
     text-decoration: none;
-    font-size: 24px;
+    font-size: 18px;
+}
+.remote a:hover{
+    color: #34495e;
 }
 .wrapper{
     position: fixed;
@@ -78,14 +86,17 @@
 ul.sidebar-nav{
     list-style: none;
     width: 100%;
-    margin:0;
+    margin: 52px 0px;
 }
 ul.sidebar-nav li{
     background: #3498DB;
     padding: 20px 0;
     margin: 0 10px 10px;
     border-radius: 2px;
-
+    cursor: pointer;
+}
+ul.sidebar-nav li:hover{
+    background: #E74C3C;
 }
 ul.sidebar-nav p{
     margin: 0;
@@ -129,19 +140,20 @@ ul.sidebar-nav li a{
     list-style: none;
     margin-top: 34px;
     position: fixed;
-    width: 315px;
+    width: 334px;
     left: 38%;
     margin-left: -145px;
+    z-index: 99999;
 }
 .sort-tracks li.sort-text{
     margin-right: 6px;
     color: #999;
 }
 .sort-tracks li.filter a:hover,  ul.sub-list li a:hover{
-background: #E74C3C;
+    background: #E74C3C;
 }
 .sort-tracks li.filter a.active{
-background: #E74C3C;
+    background: #E74C3C;
 }
 
 .sort-tracks li.filter a{
@@ -212,7 +224,7 @@ background: #E74C3C;
     right: 0;
     text-align: center;
     background: #34495e;
-    top: 40px;
+    top: 51px;
     border-top-left-radius: 2px;
 }
 .listen{
@@ -285,6 +297,9 @@ background: #E74C3C;
     padding: 14px;
     font-size: 22px;
     font-weight: lighter;
+}
+.comments{
+    display: none;
 }
 .l-comments{
     top:15%;
