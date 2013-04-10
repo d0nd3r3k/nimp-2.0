@@ -1,5 +1,6 @@
 $(document).ready(function(){
-    var online = true;
+    
+    var online = false;
     
     if(!online){
         SC.initialize({
@@ -13,10 +14,27 @@ $(document).ready(function(){
             redirect_uri: "http://preso.ly:3000/callback"
         });
     }
-    /*SC.stream("/tracks/293", function(sound){
-       // sound.play();
-    });*/
+    
+    $("#score").on('click',function(e){
+        $(".tracks").each( function(){
+            
+            });
+    });
+    
+    $(".s-blocks").hover(function(){
+        $(this).css('background','#E74C3C');  
+    }, function(){
+        $(this).css('background','#34495e');  
+    });
+    
+    //Filter dropdown sort-nav
     $(".filter").on('click',function(e){
+        if($(this).attr("id") == "tracks"){
+            $("ul.sort-tracks").fadeIn("slow");
+        }
+        else{
+            $("ul.sort-tracks").fadeOut("fast");
+        }
         e.preventDefault();
         $(this).attr('id');
         $(".filter").removeClass('active');
@@ -24,9 +42,11 @@ $(document).ready(function(){
         $(".s-block").hide();
         $("."+$(this).attr('id')).fadeIn(300);
     });
+    
+    //Trigger modal and listen to track with comments visuals
     $('.listen').on('click', '.tracks', function(){
+        
         var track_id = $(this).data("id");
-        //var duration = $(this).data("duration");
         var score = $(this).data("score");
         var artwork_url = $(this).find('img').attr('src');
         var title = $(this).find('.title').text();
@@ -37,22 +57,28 @@ $(document).ready(function(){
         $(".info-block").append("<p> N!MP Score: " + score + "</p>");
         $(".l-comments").addClass('isLeft');
         
-        SC.stream("/tracks/" + track_id, {
-            
+        SC.stream("/tracks/" + track_id, 
+        //Visualise Comments
+        {
             ontimedcomments: function(comments){
+                
+                //Middle Comments Area
                 $(".m-comments").show();
+                
+                //Left Comments Area
                 $(".l-comments").show();
+                
+                //Right Comments Area
                 $(".r-comments").show();
-                console.log(comments[0].body);
+                
                 var comment = "<div class='comment'>" + comments[0].body + "</div>";
                 
+                //Insert Comment in appropriate Area
                 if($(".l-comments").hasClass('isLeft') && $(comment).text().length < 32 ){
                     $(".l-comments").prepend($(comment).hide()
                         .fadeIn("fast")
                         .delay(5000)
                         .fadeOut('fast'));
-                                    
-                                    
                     $(".l-comments").removeClass('isLeft');
                     $(".r-comments").addClass('isRight');
                 }
@@ -61,10 +87,6 @@ $(document).ready(function(){
                         .fadeIn("fast")
                         .delay(5000)
                         .fadeOut('fast'));
-                                    
-                                    
-                    
-                    
                     $(".l-comments").addClass('isLeft');
                     $(".r-comments").removeClass('isRight');
                 }
@@ -74,81 +96,111 @@ $(document).ready(function(){
                         .delay(10000)
                         .fadeOut('fast'));
                 }
-                
             }
-        },function(sound){
+        },
+        
+        //Play Track
+        function(sound){
             sound.play();
-            $(".close").on('click', function(){
-                $('#player').modal('hide');
+            
+            //When Modal is hidden
+            $('#player').on('hidden', function () {
+                $("#player").modal('hide');
                 $(".info-block").remove();
                 $(".comment").remove();
                 sound.stop();
-            });
+    
+            });    
         });
-        $('#player').modal('show');   
+        $('#player').modal('show');
+        
+        //When Model is close with the x button
+        $(".close").on('click',function(){
+            $("#player").modal('hide');
+        });
+    
     });
     
-    
+    //Trigger Modal with artist page
     $('.listen').on('click', '.artists', function(){
         
-        });    
+        });
+
+    //Get Artists and Tracks upon Login    
     $("#connect").on('click',function(e){
+        
         e.preventDefault();
+        
+        //Sound Cloud Connection
         SC.connect(function(){
+            
+            //GET user info
             SC.get("/me", function(me){
+                
                 $("#username").text(me.username);
                 $("#avatar img").attr("src",me.avatar_url);
-                //console.log(me);
                 $("#connect").fadeOut(200);
                 $('.logged-in').delay(200).fadeIn(300);
                 
+                //GET User's Following
                 SC.get("/me/followings", function(followings){
+                    
                     var tracks_number = 0;    
                     
-                    for(var i = 0; i < followings.length; i++){    
-                        if(followings[i].avatar_url && followings[i].track_count > 0){
-                            var reputation = followings[i].public_favorites_count + followings[i].followers_count*0.3;
-                            var block = "<div data-id='"+followings[i].id+"' class='s-block artists'>\n\
-                                                <img src='"+followings[i].avatar_url+"'/>\n\
+                    $(followings).each(function(i, following){
+                        
+                        if(following.avatar_url && following.track_count > 0){
+                            
+                            //Calculate Reputation Score
+                            var reputation = following.public_favorites_count + following.followers_count*0.3;
+                            
+                            //Generate Artist Block
+                            var block = "<div data-id='"+following.id+"' class='s-block artists'>\n\
+                                                <img src='"+following.avatar_url+"'/>\n\
                                                 <div class='text'>\n\
-                                                    <h2 class='title'>"+followings[i].username+"</h2>\n\
+                                                    <h2 class='title'>"+following.username+"</h2>\n\
                                                     <p class='reputation'>Reputation Score: "+parseInt(reputation)+"</p>\n\
-                                                    <p class='reputation'>"+followings[i].track_count+" Track</p>\n\
+                                                    <p class='reputation'>"+following.track_count+" Track</p>\n\
                                                 </div>\n\
                                             </div>";
                             $('.l-holder').append(block);
                         }
-                        SC.get("/users/" + followings[i].id + "/tracks", function(tracks){
+                        
+                        //GET User's Tracks
+                        SC.get("/users/" + following.id + "/tracks", function(tracks){
                             tracks_number += tracks.length;
                             $('.track').text(tracks_number + " tracks");
-                            // console.log(tracks);
-                            for(var j = 0; j < tracks.length; j++){
+                            
+                            $(tracks).each(function(i, track){
+                                
+                                //Calculate Buzz
                                 var buzz = 0;
                                 
-                                if(tracks[j].commentable){
-                                    buzz += tracks[j].comment_count*2;
+                                if(track.commentable){
+                                    buzz += track.comment_count*2;
                                 }
-                                if(tracks[j].downloadable){
-                                    buzz += tracks[j].download_count*1.5;
+                                if(track.downloadable){
+                                    buzz += track.download_count*1.5;
                                 }
-                                //buzz += tracks[i].playback_count*0.5;
+                                buzz += track.playback_count*0.5;
                                 
-                                if(tracks[j].artwork_url){
-                                    //data-duration='"+tracks[j].duration+"'
-                                    var block = "<div data-id='"+tracks[j].id+"' data-score='"+parseInt(buzz)+"' class='s-block tracks' style='display:none;'>\n\
-                                                <img src='"+tracks[j].artwork_url+"'/>\n\
+                                //Generate Track Block
+                                if(track.artwork_url){
+                                    
+                                    var block = "<div data-id='"+track.id+"' data-score='"+parseInt(buzz)+"' class='s-block tracks' style='display:none;'>\n\
+                                                <img src='"+track.artwork_url+"'/>\n\
                                                 <div class='text'>\n\
-                                                    <h2 class='title'>"+tracks[j].title+"</h2>\n\
+                                                    <h2 class='title'>"+track.title+"</h2>\n\
                                                     <p>N!MP Score: "+ parseInt(buzz) +"</p>\n\
                                                 </div>\n\
                                             </div>";
                                     $('.l-holder').append(block);
                                 }     
-                            }
+                            });
                             
                         });
-                    }
-                      
+                        
+                    });
                     
                 });
                 

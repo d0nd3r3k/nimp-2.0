@@ -108,7 +108,7 @@ ul.sidebar-nav li a{
     left: 38%;
     margin-left: -141px;
 }
-.a-nav  ul.sub-list li{
+.a-nav  ul.sub-list li, ul.sort-tracks li{
     display: inline;
     cursor: pointer;
 }
@@ -124,6 +124,35 @@ ul.sidebar-nav li a{
 }
 .a-nav  ul.sub-list li.active a{
     background: #E74C3C;
+}
+.sort-tracks{
+    list-style: none;
+    margin-top: 34px;
+    position: fixed;
+    width: 315px;
+    left: 38%;
+    margin-left: -145px;
+}
+.sort-tracks li.sort-text{
+    margin-right: 6px;
+    color: #999;
+}
+.sort-tracks li.filter a:hover,  ul.sub-list li a:hover{
+background: #E74C3C;
+}
+.sort-tracks li.filter a.active{
+background: #E74C3C;
+}
+
+.sort-tracks li.filter a{
+    text-decoration: none;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: lighter;
+    color: white;
+    padding: 4px 14px;
+    background: #2980B9;
+    margin: -2px;
 }
 .listen, .organize, .a-nav {
     margin-left:0;
@@ -190,7 +219,7 @@ ul.sidebar-nav li a{
     margin-left: 8%;
     z-index: -1;
     overflow-y: auto;
-    top: 74px;
+    top: 100px;
     overflow-x: hidden;
 }
 .a-nav{
