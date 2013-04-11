@@ -1,16 +1,20 @@
 $(document).ready(function(){
     
-    var online = true;
+    var online = false;
+    var client_id = "";
+    
     
     if(!online){
+        client_id = "18057c47126031a99017661840257417";
         SC.initialize({
-            client_id: "18057c47126031a99017661840257417",
+            client_id: client_id,
             redirect_uri: "http://localhost:3000/callback"
         });
     }
     else if(online){
+        client_id = "988ae8ccee6597e1d4e45ac225d80ea2";
         SC.initialize({
-            client_id: "988ae8ccee6597e1d4e45ac225d80ea2",
+            client_id: client_id,
             redirect_uri: "http://preso.ly:3000/callback"
         });
     }
@@ -54,7 +58,8 @@ $(document).ready(function(){
         $(".info-block").append("<h2>" + title + "</h2>");
         $(".info-block").append("<p> N!MP Score: " + score + "</p>");
         
-        $(".info-block").append("<a href='"+download_url+"'><i class=' icon-arrow-down icon-white'><i/></a>")
+        
+        $(".info-block").append("<a class='download-track' href='"+download_url+"?client_id="+client_id+"' target='_BLANK'>.mp3 <i class=' icon-arrow-down icon-white'><i/></a>")
         
         
         $(".l-comments").addClass('isLeft');
@@ -105,8 +110,33 @@ $(document).ready(function(){
         function(sound){
             sound.play();
             
+            //Pause/ Play
+            $(".plpo").on('click',function(e){
+                console.log($(this).hasClass('play'));
+                console.log($(this).hasClass('pause'));
+                if($(this).hasClass('play')){
+                    sound.pause();
+                    $(this).removeClass('play');
+                    $(this).addClass('pause');
+                    $(this).find('span').text('play');
+                } else if($(this).hasClass('pause')){
+                    sound.resume();
+                    $(this).removeClass('pause');
+                    $(this).addClass('play');
+                    $(this).find('span').text('pause');
+                }
+            });
+            
             //When Modal is hidden
             $('#player').on('hidden', function () {
+                
+                //Reset Play/Pause 
+                $(".plpo").off('click');
+                $(".plpo").removeClass('pause');
+                $(".plpo").addClass('play');
+                $(".plpo").find('span').text('pause');
+                
+                //Hide Modal and remove comments
                 $("#player").modal('hide');
                 $(".info-block").remove();
                 $(".comment").remove();
@@ -172,9 +202,13 @@ $(document).ready(function(){
                         //GET User's Tracks
                         SC.get("/users/" + following.id + "/tracks", function(tracks){
                             tracks_number += tracks.length;
+                            
+                            var single_track = {};
+                            
                             $('.track').text(tracks_number + " tracks");
                             
-                            $(tracks).each(function(i, track){
+                            
+                            $(tracks).each(function(j, track){
                                 
                                 //Calculate Buzz
                                 var buzz = 0;
@@ -187,9 +221,24 @@ $(document).ready(function(){
                                 }
                                 buzz += track.playback_count*0.3;
                                 buzz += track.favoritings_count*0.7;
+                                buzz = parseInt(buzz);
+                                
+                                
+
                                 
                                 //Generate Track Block
                                 if(track.artwork_url){
+                                    single_track = {
+                                        'id':j,
+                                        'buzz_score':buzz,
+                                        'artwork_url':track.artwork_url,
+                                        'track_id':track.id,
+                                        'track_title':track.title,
+                                        'downloadable': track.downloadable,
+                                        'download_url':track.download_url,
+                                        'duration':track.duration,
+                                        'genre':track.genre
+                                    };
                                     //TODO: download_url - duration - genre - 
                                     var block = "<div data-id='"+track.id+"' data-score='"+parseInt(buzz)+"' class='s-block tracks' style='display:none;'>\n\
                                                 <img src='"+track.artwork_url+"'/>\n\
@@ -208,8 +257,9 @@ $(document).ready(function(){
                         });
                         
                     });
-                    
+                   
                 });
+                
                 
             });
           

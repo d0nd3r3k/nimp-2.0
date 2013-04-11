@@ -323,3 +323,55 @@ ul.sidebar-nav li a{
     margin-left: -250px;
     text-align: center;
 }
+.iphone{
+    background-image: url(../img/iphone.png);
+    display: inline-block;
+    width: 13px;
+    height: 16px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    margin-left: 16px;
+    margin-right: 16px;
+}
+.player .play span, .player .pause span{
+    font-size: 32px;
+    font-weight: lighter;
+    text-transform: uppercase;
+    opacity: 0.9;   
+}
+.player .play{
+    position: absolute;
+    left:50%;
+    margin-left: -50px;
+    top:150px;
+    cursor: pointer;
+}
+.player .pause{
+    position: absolute;
+    left:50%;
+    margin-left: -38px;
+    top:150px;
+    cursor: pointer;
+}
+.player .play:hover{
+    color:#E74C3C;
+}
+.player .pause{
+    color:#E74C3C;
+}
+.icon-arrow-down{
+    opacity: 0.5;
+}
+a.download-track{
+    position: absolute;
+    right: -27px;
+    bottom: -2px;
+    text-decoration: none;
+    color: #999;
+    font-weight: lighter;
+    opacity: 0.8;
+}
+a.download-track:hover{
+    color:#777;
+    opacity:1;    
+}
