@@ -36,3 +36,44 @@ app.get('/users', user.list);
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+/*//Visualise Comments
+                {   
+                    ontimedcomments: function(comments){
+                
+                        //Middle Comments Area
+                        $(".m-comments").show();
+                
+                        //Left Comments Area
+                        $(".l-comments").show();
+                
+                        //Right Comments Area
+                        $(".r-comments").show();
+                
+                        var comment = "<div class='comment'>" + comments[0].body + "</div>";
+                
+                        //Insert Comment in appropriate Area
+                        if($(".l-comments").hasClass('isLeft') && $(comment).text().length < 32 ){
+                            $(".l-comments").prepend($(comment).hide()
+                                .fadeIn("fast")
+                                .delay(5000)
+                                .fadeOut('fast'));
+                            $(".l-comments").removeClass('isLeft');
+                            $(".r-comments").addClass('isRight');
+                        }
+                        else if($(".r-comments").hasClass('isRight') && $(comment).text().length < 32){
+                            $(".r-comments").prepend($(comment).hide()
+                                .fadeIn("fast")
+                                .delay(5000)
+                                .fadeOut('fast'));
+                            $(".l-comments").addClass('isLeft');
+                            $(".r-comments").removeClass('isRight');
+                        }
+                        else{    
+                            $(".m-comments").html($(comment).hide()
+                                .fadeIn("fast")
+                                .delay(10000)
+                                .fadeOut('fast'));
+                        }
+                    }
+                }*/
