@@ -1,6 +1,6 @@
 $(document).ready(function(){
     
-    var online = false;
+    var online = true;
     var client_id = "";
     
     
