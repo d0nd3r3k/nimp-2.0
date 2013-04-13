@@ -1,8 +1,18 @@
 $(document).ready(function(){
     
-    var online = true;
+    var online = false;
     var client_id = "";
     
+    function msToTime(s) {
+        var ms = s % 1000;
+        s = (s - ms) / 1000;
+        var secs = s % 60;
+        s = (s - secs) / 60;
+        var mins = s % 60;
+        var hrs = (s - mins) / 60;
+
+        return hrs + ':' + mins + ':' + secs + '.' + ms;
+    }
     
     if(!online){
         client_id = "18057c47126031a99017661840257417";
@@ -52,6 +62,7 @@ $(document).ready(function(){
         
         var downloadable = $(this).find('#download-url').data('d');
         var download_url = $(this).find('#download-url').data('url');
+        var track_duration = msToTime($(this).data("duration"));
         
         //Trigger Loader
         $(".loader-gif-right").fadeIn('fast');
@@ -144,20 +155,16 @@ $(document).ready(function(){
                         onfinish: function() {
                             $("#player").modal('hide');
                         },
-                        whileplaying: function(){
-                            
-                        },
                         whileloading: function(){
-                            
+
+                            console.log('whileplaying(): '+msToTime(this.position)+' / '+ track_duration);    
                         },
                         onplay: function(){
                             $(".loader-gif-right").fadeOut('fast');
                             $(".loader-gif-left").fadeOut('fast');
                         }
                     });
-                    /* sound.options.whileplaying = function() {
-                        console.log('whileplaying(): '+this.position+' / '+this.duration);
-                    }*/
+                    
                     //Pause/ Play
                     $(".plpo").on('click',function(e){
                         console.log($(this).hasClass('play'));
@@ -292,7 +299,7 @@ $(document).ready(function(){
                                         'genre':track.genre
                                     };
                                     //TODO: download_url - duration - genre
-                                    var block = "<div data-id='"+track.id+"' data-score='"+parseInt(buzz)+"' class='s-block tracks' style='display:none;'>\n\
+                                    var block = "<div data-duration='"+track.duration+"' data-id='"+track.id+"' data-score='"+parseInt(buzz)+"' class='s-block tracks' style='display:none;'>\n\
                                                 <img src='"+track.artwork_url+"'/>\n\
                                                 <div class='text'>\n\
                                                     <h2 class='title'>"+track.title+"</h2>\n\
