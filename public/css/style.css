@@ -420,3 +420,11 @@ a.download-track:hover{
     height: 40px;
     color: white;
 }
+#duration{
+    position: absolute;
+    bottom: 74px;
+    right: 32px;
+}
+.track_duration{
+    margin-left: 10px;
+}

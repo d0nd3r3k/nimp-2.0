@@ -11,7 +11,7 @@ $(document).ready(function(){
         var mins = s % 60;
         var hrs = (s - mins) / 60;
 
-        return hrs + ':' + mins + ':' + secs + '.' + ms;
+        return hrs + '.' + mins + '.' + secs;
     }
     
     if(!online){
@@ -156,8 +156,8 @@ $(document).ready(function(){
                             $("#player").modal('hide');
                         },
                         whileloading: function(){
-
-                            console.log('whileplaying(): '+msToTime(this.position)+' / '+ track_duration);    
+                            $("#duration").html("<span class='track-duration'>" + msToTime(this.position) + "</span> / <span class='track-duration'>" + track_duration + "</span>");    
+                            
                         },
                         onplay: function(){
                             $(".loader-gif-right").fadeOut('fast');
