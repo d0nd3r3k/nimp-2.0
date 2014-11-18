@@ -1,6 +1,6 @@
 $(document).ready(function(){
     
-    var online = true;
+    var online = false;
     var client_id = "";
     
     function msToTime(s) {
